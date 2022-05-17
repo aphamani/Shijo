@@ -1,5 +1,9 @@
 const { Client, Collection, Intents } = require('discord.js');
 const fs = require('node:fs');
+const log4js = require('log4js');
+log4js.configure('./config/log4js.json');
+const log = log4js.getLogger("main");
+
 require('dotenv').config({ path: 'config/.env' });
 
 const shijo = new Client({
@@ -19,7 +23,7 @@ for (const file of commandFiles) {
 
 
 shijo.on('ready', () => {
-    console.log('The bot is on');
+    log.info('The bot is on');
 });
 
 shijo.on('interactionCreate', async interaction => {
@@ -32,7 +36,7 @@ shijo.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		console.error(error);
+		log.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
