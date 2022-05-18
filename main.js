@@ -8,7 +8,8 @@ require('dotenv').config({ path: 'config/.env' });
 
 const shijo = new Client({
     intents: [
-
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
     ]
 });
 
