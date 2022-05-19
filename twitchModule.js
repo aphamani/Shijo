@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const axios = require('axios');
 const log = require('log4js').getLogger("Twitch-Event");
 const TwitchJs = require('twitch-js').default
 
@@ -20,14 +20,16 @@ module.exports = async function twitchIsLive(shijo){
         
     try 
         {     
-            const response =await fetch('https://id.twitch.tv/oauth2/token', {
-                method: 'POST',
+
+            const response = await axios('https://id.twitch.tv/oauth2/token',{
+                method: 'post',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(body)
-            });
-            
-            const json = await response.json();
-            token = json.access_token;
+                data: JSON.stringify(body)
+              }).then(function (response) {
+                return response.data;
+              });
+
+            token = response.access_token;
           
             } catch (error) {
               log.error(error);
