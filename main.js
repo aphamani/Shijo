@@ -1,6 +1,8 @@
 const { Client, Collection, Intents } = require('discord.js');
 const fs = require('node:fs');
 const log4js = require('log4js');
+const twitch = require('./commands/twitch');
+
 log4js.configure('./config/log4js.json');
 const log = log4js.getLogger('Main');
 
@@ -11,6 +13,8 @@ const shijo = new Client({
 });
 
 shijo.twitch = new Collection();
+
+shijo.twitch.set('mainChannelInLive', false);
 
 shijo.commands = new Collection();
 
@@ -43,16 +47,42 @@ shijo.on('interactionCreate', async interaction => {
 
 shijo.on('presenceUpdate', (oldPresence, newPresence) => {
 
-	if (!newPresence.activities) return false;
-	newPresence.activities.forEach(activity => {
-		if (activity.type == 'STREAMING' && newPresence.user.username == process.env.discordAccountTwitchName && newPresence.user.discriminator == process.env.discordAccountTwitchNumber) {
-			log.info(process.env.discordAccountTwitchName + 'in live !');
-			shijo.commands.execute('twitch');
+	const listOFActivity = [];
+
+	if (newPresence.user.username == process.env.discordAccountTwitchName && newPresence.user.discriminator == process.env.discordAccountTwitchNumber) {
+
+		for (const activity of newPresence.activities) {
+			listOFActivity.push(activity.type);
 		}
-		else if (activity.type != 'STREAMING' && newPresence.user.username == process.env.discordAccountTwitchName && newPresence.user.discriminator == process.env.discordAccountTwitchNumber) {
+
+		const id = listOFActivity.findIndex(i => i === 'STREAMING');
+
+		if (shijo.twitch.get('mainChannelInLive') && id == -1) {
+
 			log.info('End of ' + process.env.discordAccountTwitchName + 'live !');
-			shijo.commands.execute('twitch');
+			shijo.twitch.set('mainChannelInLive', false);
+			const command = shijo.commands.get('twitch');
+			command.execute(shijo);
+
 		}
+		else if (!shijo.twitch.get('mainChannelInLive') && id != -1) {
+
+			log.info(process.env.discordAccountTwitchName + ' in live !');
+			shijo.twitch.set('mainChannelInLive', true);
+			const command = shijo.commands.get('twitch');
+			command.execute(shijo);
+
+		}
+	}
+
+	if (newPresence.activities.length == 0) return false;
+
+	newPresence.activities.forEach(async activity => {
+
+		if (activity.type == 'STREAMING') {
+			twitch.checkChannelOnLiveList(shijo, newPresence.userId, activity.details);
+		}
+
 	});
 });
 
