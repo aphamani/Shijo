@@ -1,6 +1,5 @@
-
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const log = require('log4js').getLogger("ping");
+const log = require('log4js').getLogger('ping');
 
 module.exports = {
 	data: new SlashCommandBuilder()
