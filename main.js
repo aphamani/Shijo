@@ -12,9 +12,12 @@ const shijo = new Client({
     intents: [
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-		Intents.FLAGS.GUILD_PRESENCES
+		Intents.FLAGS.GUILD_PRESENCES,
+		Intents.FLAGS.GUILD_VOICE_STATES
     ]
 });
+
+shijo.music = new Collection();
 
 shijo.twitch = new Collection();
 
@@ -41,7 +44,7 @@ shijo.on('interactionCreate', async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction);
+		await command.execute(shijo, interaction);
 	}
 	catch (error) {
 		log.error(error);

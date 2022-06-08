@@ -15,7 +15,7 @@ module.exports = {
                 .setRequired(true)),
 
     
-    async execute(interaction) {
+    async execute(client, interaction) {
         const pollTitle = interaction.options.getString('title');
         const pollContent = interaction.options.getString('content');
         

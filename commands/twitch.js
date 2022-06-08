@@ -188,7 +188,7 @@ module.exports = {
 			subcommand
 				.setName('check-is-live-main')
 				.setDescription('Check main channel twitch')),
-	async execute(interaction) {
+	async execute(client, interaction) {
 
 		if (interaction.options._subcommand != undefined) {
 			switch (interaction.options.getSubcommand()) {
@@ -220,7 +220,7 @@ module.exports = {
 			}
 		}
 		else {
-			checkIsLiveTwitch(interaction, true);
+			checkIsLiveTwitch(client, true);
 		}
 	},
 	checkChannelOnLiveList: function(client, userId, nameSession) {
