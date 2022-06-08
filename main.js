@@ -9,12 +9,12 @@ const log = log4js.getLogger('Main');
 require('dotenv').config({ path: 'config/.env' });
 
 const shijo = new Client({
-    intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 		Intents.FLAGS.GUILD_PRESENCES,
-		Intents.FLAGS.GUILD_VOICE_STATES
-    ]
+		Intents.FLAGS.GUILD_VOICE_STATES,
+	],
 });
 
 shijo.music = new Collection();
