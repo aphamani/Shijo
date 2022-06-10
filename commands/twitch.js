@@ -190,7 +190,7 @@ module.exports = {
 				.setDescription('Check main channel twitch')),
 	async execute(client, interaction) {
 
-		if (interaction.options._subcommand != undefined) {
+		if (interaction != null) {
 			switch (interaction.options.getSubcommand()) {
 			case 'add-to-list':{
 				const channel_name = interaction.options.getString('channel_name');

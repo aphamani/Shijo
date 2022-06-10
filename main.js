@@ -69,7 +69,7 @@ shijo.on('presenceUpdate', (oldPresence, newPresence) => {
 			log.info('End of ' + process.env.discordAccountTwitchName + 'live !');
 			shijo.twitch.set('mainChannelInLive', false);
 			const command = shijo.commands.get('twitch');
-			command.execute(shijo);
+			command.execute(shijo, null);
 
 		}
 		else if (!shijo.twitch.get('mainChannelInLive') && id != -1) {
@@ -77,7 +77,7 @@ shijo.on('presenceUpdate', (oldPresence, newPresence) => {
 			log.info(process.env.discordAccountTwitchName + ' in live !');
 			shijo.twitch.set('mainChannelInLive', true);
 			const command = shijo.commands.get('twitch');
-			command.execute(shijo);
+			command.execute(shijo, null);
 
 		}
 	}
